@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- 参数配置 -->
+  <arg name="serial_port" default="/dev/ttyTHS0" />
+  <arg name="baud_rate" default="460800" />
+  <arg name="rate" default="50.0" />
+  <arg name="frame_id" default="imu_link" />
+  <arg name="use_filter" default="true" />
+  <arg name="filter_size" default="5" />
+
+  <!-- 启动IMU数据发布器节点 -->
+  <node pkg="limo_py_drive" type="limo_imu_publisher.py" name="limo_imu_publisher" output="screen">
+    <param name="serial_port" value="$(arg serial_port)" />
+    <param name="baud_rate" value="$(arg baud_rate)" />
+    <param name="rate" value="$(arg rate)" />
+    <param name="frame_id" value="$(arg frame_id)" />
+    <param name="use_filter" value="$(arg use_filter)" />
+    <param name="filter_size" value="$(arg filter_size)" />
+  </node>
+</launch>

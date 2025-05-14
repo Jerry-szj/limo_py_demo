@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- 参数配置 -->
+  <arg name="serial_port" default="/dev/ttyTHS0" />
+  <arg name="baud_rate" default="460800" />
+  <arg name="check_rate" default="10.0" />
+  <arg name="auto_recovery" default="true" />
+  <arg name="normal_max_speed" default="1.0" />
+  <arg name="warning_max_speed" default="0.5" />
+  <arg name="critical_max_speed" default="0.2" />
+  <arg name="battery_warning_threshold" default="11.0" />
+  <arg name="battery_critical_threshold" default="10.0" />
+
+  <!-- 启动错误检测与速度控制器节点 -->
+  <node pkg="limo_py_drive" type="limo_error_detection_and_speed_controller.py" name="limo_error_detection_and_speed_controller" output="screen">
+    <param name="serial_port" value="$(arg serial_port)" />
+    <param name="baud_rate" value="$(arg baud_rate)" />
+    <param name="check_rate" value="$(arg check_rate)" />
+    <param name="auto_recovery" value="$(arg auto_recovery)" />
+    <param name="normal_max_speed" value="$(arg normal_max_speed)" />
+    <param name="warning_max_speed" value="$(arg warning_max_speed)" />
+    <param name="critical_max_speed" value="$(arg critical_max_speed)" />
+    <param name="battery_warning_threshold" value="$(arg battery_warning_threshold)" />
+    <param name="battery_critical_threshold" value="$(arg battery_critical_threshold)" />
+  </node>
+</launch>

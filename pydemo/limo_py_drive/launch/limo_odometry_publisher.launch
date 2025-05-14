@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- 参数配置 -->
+  <arg name="serial_port" default="/dev/ttyTHS0" />
+  <arg name="baud_rate" default="460800" />
+  <arg name="rate" default="10.0" />
+  <arg name="frame_id" default="odom" />
+  <arg name="child_frame_id" default="base_link" />
+
+  <!-- 启动里程计数据发布器节点 -->
+  <node pkg="limo_py_drive" type="limo_odometry_publisher.py" name="limo_odometry_publisher" output="screen">
+    <param name="serial_port" value="$(arg serial_port)" />
+    <param name="baud_rate" value="$(arg baud_rate)" />
+    <param name="rate" value="$(arg rate)" />
+    <param name="frame_id" value="$(arg frame_id)" />
+    <param name="child_frame_id" value="$(arg child_frame_id)" />
+  </node>
+</launch>

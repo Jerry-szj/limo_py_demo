@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- 参数配置 -->
+  <arg name="serial_port" default="/dev/ttyTHS0" />
+  <arg name="baud_rate" default="460800" />
+  <arg name="control_type" default="mouse" doc="Control type: 'keyboard' or 'mouse'" />
+  
+  <!-- 功能启用配置 -->
+  <arg name="enable_odometry" default="true" />
+  <arg name="enable_status" default="true" />
+  <arg name="enable_mode_control" default="true" />
+  <arg name="enable_imu" default="true" />
+  <arg name="enable_error_detection" default="true" />
+  
+  <!-- 里程计参数 -->
+  <arg name="odom_rate" default="10.0" />
+  <arg name="odom_frame_id" default="odom" />
+  <arg name="odom_child_frame_id" default="base_link" />
+  
+  <!-- 状态信息参数 -->
+  <arg name="status_rate" default="1.0" />
+  
+  <!-- 模式控制参数 -->
+  <arg name="default_mode" default="0" />
+  <arg name="max_linear_speed" default="1.0" />
+  <arg name="max_angular_speed" default="2.0" />
+  <arg name="max_lateral_speed" default="0.8" />
+  
+  <!-- IMU参数 -->
+  <arg name="imu_rate" default="50.0" />
+  <arg name="imu_frame_id" default="imu_link" />
+  <arg name="use_filter" default="true" />
+  <arg name="filter_size" default="5" />
+  
+  <!-- 错误检测参数 -->
+  <arg name="check_rate" default="10.0" />
+  <arg name="auto_recovery" default="true" />
+  <arg name="normal_max_speed" default="1.0" />
+  <arg name="warning_max_speed" default="0.5" />
+  <arg name="critical_max_speed" default="0.2" />
+  <arg name="battery_warning_threshold" default="11.0" />
+  <arg name="battery_critical_threshold" default="10.0" />
+  
+  <!-- 启动集成控制器节点 -->
+  <node pkg="limo_py_drive" type="limo_integrated.py" name="limo_integrated_controller" output="screen">
+    <param name="serial_port" value="$(arg serial_port)" />
+    <param name="baud_rate" value="$(arg baud_rate)" />
+    <param name="control_type" value="$(arg control_type)" />
+    
+    <param name="enable_odometry" value="$(arg enable_odometry)" />
+    <param name="enable_status" value="$(arg enable_status)" />
+    <param name="enable_mode_control" value="$(arg enable_mode_control)" />
+    <param name="enable_imu" value="$(arg enable_imu)" />
+    <param name="enable_error_detection" value="$(arg enable_error_detection)" />
+    
+    <param name="odom_rate" value="$(arg odom_rate)" />
+    <param name="odom_frame_id" value="$(arg odom_frame_id)" />
+    <param name="odom_child_frame_id" value="$(arg odom_child_frame_id)" />
+    
+    <param name="status_rate" value="$(arg status_rate)" />
+    
+    <param name="default_mode" value="$(arg default_mode)" />
+    <param name="max_linear_speed" value="$(arg max_linear_speed)" />
+    <param name="max_angular_speed" value="$(arg max_angular_speed)" />
+    <param name="max_lateral_speed" value="$(arg max_lateral_speed)" />
+    
+    <param name="imu_rate" value="$(arg imu_rate)" />
+    <param name="imu_frame_id" value="$(arg imu_frame_id)" />
+    <param name="use_filter" value="$(arg use_filter)" />
+    <param name="filter_size" value="$(arg filter_size)" />
+    
+    <param name="check_rate" value="$(arg check_rate)" />
+    <param name="auto_recovery" value="$(arg auto_recovery)" />
+    <param name="normal_max_speed" value="$(arg normal_max_speed)" />
+    <param name="warning_max_speed" value="$(arg warning_max_speed)" />
+    <param name="critical_max_speed" value="$(arg critical_max_speed)" />
+    <param name="battery_warning_threshold" value="$(arg battery_warning_threshold)" />
+    <param name="battery_critical_threshold" value="$(arg battery_critical_threshold)" />
+  </node>
+  
+  <!-- 启动RViz进行可视化 -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find limo_py_drive)/rviz/limo_visualization.rviz" />
+  
+  <!-- 发布静态TF变换 -->
+  <node pkg="tf" type="static_transform_publisher" name="base_to_laser" 
+        args="0.0 0.0 0.1 0.0 0.0 0.0 base_link laser 100" />
+</launch>

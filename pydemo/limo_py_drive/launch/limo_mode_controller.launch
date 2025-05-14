@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- 参数配置 -->
+  <arg name="serial_port" default="/dev/ttyTHS0" />
+  <arg name="baud_rate" default="460800" />
+  <arg name="default_mode" default="0" />
+  <arg name="max_linear_speed" default="1.0" />
+  <arg name="max_angular_speed" default="2.0" />
+  <arg name="max_lateral_speed" default="0.8" />
+  
+  <!-- 控制方式选择 -->
+  <arg name="control_type" default="mouse" doc="Control type: 'keyboard' or 'mouse'" />
+
+  <!-- 启动麦轮控制模式切换器节点 -->
+  <node pkg="limo_py_drive" type="limo_mode_controller.py" name="limo_mode_controller" output="screen">
+    <param name="serial_port" value="$(arg serial_port)" />
+    <param name="baud_rate" value="$(arg baud_rate)" />
+    <param name="default_mode" value="$(arg default_mode)" />
+    <param name="max_linear_speed" value="$(arg max_linear_speed)" />
+    <param name="max_angular_speed" value="$(arg max_angular_speed)" />
+    <param name="max_lateral_speed" value="$(arg max_lateral_speed)" />
+    <param name="control_type" value="$(arg control_type)" />
+  </node>
+
+  <!-- 根据控制类型启动对应的控制节点 -->
+  <group if="$(eval control_type == 'keyboard')">
+    <node pkg="limo_py_drive" type="keyboard_teleop.py" name="keyboard_teleop" output="screen" />
+  </group>
+
+  <group if="$(eval control_type == 'mouse')">
+    <node pkg="limo_py_drive" type="mouse_teleop.py" name="mouse_teleop" output="screen" />
+  </group>
+</launch>
